@@ -6,7 +6,7 @@ class CreateContentItems < ActiveRecord::Migration[5.0]
       t.string :author
       t.string :summary
       t.string :content
-      t.integer :status
+      t.boolean :status
 
       t.timestamps
     end
