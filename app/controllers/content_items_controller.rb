@@ -4,14 +4,14 @@ class ContentItemsController < ApplicationController
   # GET /content_items
   def index
     @content_items = ContentItem.published
-    ContentItem.not_published.map{|c| PublishItemJob.perform_later(c.id)}
-
+    ContentItem.not_published.map {|c| PublishItemJob.perform_later(c.id)}
+    ObjectSpace.define_finalizer(self, seed_before_close)
     render json: @content_items
   end
 
   # GET /content_items/1
   def show
-    render json: @content_item.published
+    render json: @content_item
   end
 
   # POST /content_items
@@ -37,6 +37,16 @@ class ContentItemsController < ApplicationController
   # DELETE /content_items/1
   def destroy
     @content_item.destroy
+  end
+
+  # HELPER METHODS
+  def seed_before_close
+    Proc.new {
+      ContentItem.limit(ContentItem.all.length / 2).each do |c|
+        c.status = 'draft'
+        c.save!
+      end
+    }
   end
 
   private
