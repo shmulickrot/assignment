@@ -1,0 +1,21 @@
+table {
+  width: 98%;
+}
+
+/*td.mat-cell.mat-column-content {*/
+  /*padding: 0 10px;*/
+  /*padding: 13px 22px;*/
+/*}*/
+
+.mat-row {
+  height: auto;
+}
+
+.mat-cell {
+  padding: 8px 8px 8px 0;
+}
+
+.mat-column-Actions {
+  flex: 0 0 100px !important;
+  white-space: unset !important;
+}
