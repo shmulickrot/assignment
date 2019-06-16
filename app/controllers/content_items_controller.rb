@@ -3,7 +3,8 @@ class ContentItemsController < ApplicationController
 
   # GET /content_items
   def index
-    @content_items = ContentItem.all
+    @content_items = ContentItem.published
+    ContentItem.not_published.map{|c| PublishItemJob.perform_later(c.id)}
 
     render json: @content_items
   end
