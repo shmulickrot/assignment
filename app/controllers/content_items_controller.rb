@@ -3,10 +3,14 @@ class ContentItemsController < ApplicationController
 
   # GET /content_items
   def index
-    @content_items = ContentItem.published
+    @content_items = ContentItem.published.select(show_fields)
     ContentItem.not_published.map {|c| PublishItemJob.perform_later(c.id)}
     ObjectSpace.define_finalizer(self, seed_before_close)
     render json: @content_items
+  end
+
+  def show_fields
+    [:title,:published_date,:author,:summary,:content]
   end
 
   # GET /content_items/1
